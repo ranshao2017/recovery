@@ -1,12 +1,13 @@
 package com.auts.lajitong.service.impl;
 
 import com.auts.lajitong.api.YPSmsApi;
-import com.auts.lajitong.consts.Const;
 import com.auts.lajitong.mapper.AccountMapper;
 import com.auts.lajitong.mapper.CaptchaMapper;
 import com.auts.lajitong.model.common.ResponseData;
 import com.auts.lajitong.model.dao.AccountModel;
 import com.auts.lajitong.model.dao.CaptchaModel;
+import com.auts.lajitong.consts.SexTypeEnum;
+import com.auts.lajitong.consts.StatusTypeEnum;
 import com.auts.lajitong.model.response.Account;
 import com.auts.lajitong.service.AccountService;
 import com.auts.lajitong.util.DateUtils;
@@ -17,6 +18,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -36,10 +38,14 @@ public class AccountServiceImpl implements AccountService {
 	/**
 	 * 百度人脸识别
 	 */
-    private static final String APP_ID = "15750877";
-    private static final String API_KEY = "q9efmHNaZGwkTKuyPIT33k6K";
-    private static final String SECRET_KEY = "Ev1CKA90mTk6cTsTqxEONsGgH36G3kSw";
-    private static String imageType = "BASE64";
+    @Value("${baidu.APP_ID}")
+    private String APP_ID;
+    @Value("${baidu.API_KEY}")
+    private String API_KEY;
+    @Value("${baidu.SECRET_KEY}")
+    private String SECRET_KEY;
+    @Value("${baidu.imageType}")
+    private String imageType;
 
     /**
      * 百度AI，单实例使用 避免重复获取access_token
@@ -141,8 +147,8 @@ public class AccountServiceImpl implements AccountService {
             AccountModel ac = new AccountModel();
             ac.setAccountId(mobile);
             ac.setNickName("");
-            ac.setSex(Const.SexType.SEX_UNKNOWN);
-            ac.setStatus(Const.StatusType.STATUS_NORMAL);
+            ac.setSex(SexTypeEnum.unknow.getValue());
+            ac.setStatus(StatusTypeEnum.normal.getValue());
             ac.setCurrentProfit(0);
             ac.setDeliverCount(0);
             ac.setTotalProfit(0);
@@ -274,8 +280,8 @@ public class AccountServiceImpl implements AccountService {
                     AccountModel ac = new AccountModel();
                     ac.setAccountId(mobile);
                     ac.setNickName("");
-                    ac.setSex(Const.SexType.SEX_UNKNOWN);
-                    ac.setStatus(Const.StatusType.STATUS_NORMAL);
+                    ac.setSex(SexTypeEnum.unknow.getValue());
+                    ac.setStatus(StatusTypeEnum.normal.getValue());
                     ac.setCurrentProfit(0);
                     ac.setDeliverCount(0);
                     ac.setTotalProfit(0);
@@ -368,8 +374,8 @@ public class AccountServiceImpl implements AccountService {
             AccountModel ac = new AccountModel();
             ac.setAccountId(mobile);
             ac.setNickName("");
-            ac.setSex(Const.SexType.SEX_UNKNOWN);
-            ac.setStatus(Const.StatusType.STATUS_NORMAL);
+            ac.setSex(SexTypeEnum.unknow.getValue());
+            ac.setStatus(StatusTypeEnum.normal.getValue());
             ac.setCurrentProfit(0);
             ac.setDeliverCount(0);
             ac.setTotalProfit(0);

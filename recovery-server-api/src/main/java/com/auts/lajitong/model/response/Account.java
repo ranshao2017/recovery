@@ -1,6 +1,10 @@
 package com.auts.lajitong.model.response;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.auts.lajitong.consts.SexTypeEnum;
+import com.auts.lajitong.consts.StatusTypeEnum;
+
+import java.math.BigDecimal;
 
 /**
  * 账户相关
@@ -23,6 +27,11 @@ public class Account {
     private int totalProfit;
     @JSONField(name = "create_time")
     private String createTime;
+
+    private String s_sex;
+    private String s_status;
+    private String s_current_profit;
+    private String s_total_profit;
 
     public int getUid() {
         return uid;
@@ -94,5 +103,56 @@ public class Account {
 
     public void setCreateTime(String createTime) {
         this.createTime = createTime;
+    }
+
+    public String getS_sex() {
+        return SexTypeEnum.getTextByValue(sex);
+    }
+
+    public void setS_sex(String s_sex) {
+        this.s_sex = s_sex;
+    }
+
+    public String getS_status() {
+        return StatusTypeEnum.getTextByValue(status);
+    }
+
+    public void setS_status(String s_status) {
+        this.s_status = s_status;
+    }
+
+    public String getS_current_profit() {
+        return new BigDecimal(currentProfit).movePointLeft(2).toString();
+    }
+
+    public void setS_current_profit(String s_current_profit) {
+        this.s_current_profit = s_current_profit;
+    }
+
+    public String getS_total_profit() {
+        return new BigDecimal(totalProfit).movePointLeft(2).toString();
+    }
+
+    public void setS_total_profit(String s_total_profit) {
+        this.s_total_profit = s_total_profit;
+    }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "uid=" + uid +
+                ", accountId='" + accountId + '\'' +
+                ", nickName='" + nickName + '\'' +
+                ", sex=" + sex +
+                ", status=" + status +
+                ", currentProfit=" + currentProfit +
+                ", deliverCount=" + deliverCount +
+                ", totalProfit=" + totalProfit +
+                ", createTime='" + createTime + '\'' +
+                ", s_sex='" + s_sex + '\'' +
+                ", s_status='" + s_status + '\'' +
+                ", s_current_profit='" + s_current_profit + '\'' +
+                ", s_total_profit='" + s_total_profit + '\'' +
+                '}';
     }
 }

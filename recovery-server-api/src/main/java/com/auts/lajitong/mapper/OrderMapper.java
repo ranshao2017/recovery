@@ -4,8 +4,6 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 
-import com.auts.lajitong.model.dao.OrderModel;
-
 public interface OrderMapper {
     int deleteByPrimaryKey(Long id);
 

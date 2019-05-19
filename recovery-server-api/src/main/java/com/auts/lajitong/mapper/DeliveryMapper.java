@@ -2,58 +2,64 @@ package com.auts.lajitong.mapper;
 
 import java.util.List;
 
-import com.auts.lajitong.model.dao.LitteredhatDeliveryListModel;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
+import com.auts.lajitong.model.dao.*;
+import org.apache.ibatis.annotations.*;
 
 /**
- * 订单表，投递记录.
- * @author huangrongwei
+ * 投递相关
+ * @author zqh
  *
  */
 public interface DeliveryMapper {
 
-    @Select("select * from tbl_order where user_id=#{user_id}")
+    @Select("select * from tbl_know_obj where know_name=#{knowName} limit 1")
     @Results({
-    	@Result(property = "id", column = "id"),
-    	@Result(property = "order_id", column = "order_id"),
-    	@Result(property = "user_id", column = "user_id"),
-    	@Result(property = "device_id", column = "device_id"),
-    	@Result(property = "bin_no", column = "bin_no"),
-    	@Result(property = "order_type", column = "order_type"),
-    	@Result(property = "delivery_time", column = "delivery_time"),
+            @Result(property = "kid", column = "kid"),
+            @Result(property = "knowName", column = "know_name"),
+            @Result(property = "objType", column = "obj_type")
+    })
+    KnowObjModel queryKnowObjByName(@Param("knowName") String knowName);
+
+    @Select("select * from tbl_obj_type where oid=#{oid} limit 1")
+    @Results({
+            @Result(property = "oid", column = "oid"),
+            @Result(property = "objectName", column = "object_name"),
+            @Result(property = "unitPrice", column = "unit_price"),
+            @Result(property = "remark", column = "remark")
+    })
+    ObjTypeModel queryObjTypeByOid(@Param("oid") int oid);
+
+    @Insert("insert into tbl_know_obj (know_name, obj_type) values (#{kom.knowName},#{kom.objType})")
+    @Options(useGeneratedKeys = true, keyProperty = "kom.kid")
+    int saveKnowObj(@Param("kom") KnowObjModel kom);
+
+    @Insert("insert into tbl_know_dtl (image_path, device_id, uid, know_name, know_time) values (#{kdm.imagePath},#{kdm.deviceId}," +
+            "#{kdm.uid},#{kdm.knowName},#{kdm.knowTime})")
+    @Options(useGeneratedKeys = true, keyProperty = "kdm.hid")
+    int saveKnowDtl(@Param("kdm") KnowDtlModel kdm);
+
+    @Select("select * from tbl_order where uid=#{uid} order by delivery_time desc")
+    @Results({
+    	@Result(property = "tid", column = "tid"),
+    	@Result(property = "orderNo", column = "order_no"),
+    	@Result(property = "uid", column = "uid"),
+    	@Result(property = "deviceId", column = "device_id"),
+    	@Result(property = "binNo", column = "bin_no"),
+    	@Result(property = "orderType", column = "order_type"),
     	@Result(property = "weight", column = "weight"),
     	@Result(property = "price", column = "price"),
     	@Result(property = "amount", column = "amount"),
-    	@Result(property = "create_time", column = "create_time"),
-    	@Result(property = "update_time", column = "update_time")
+    	@Result(property = "deliveryTime", column = "delivery_time")
     })
-    List<LitteredhatDeliveryListModel> getListByUser(String userId) throws Exception;
+    List<DeliveryOrderModel> queryDeliveryListByUser(@Param("uid") int uid);
 
-//    @Update("update tbl_user set nick_name = #{nickName}, sex=#{sex} where id=#{id}")
-//    int updateUser(@Param("id") String id, @Param("nickName") String nickName,@Param("sex") int sex);
-//
-//    @Update("update tbl_user set nick_name = #{nickName} where id=#{id}")
-//    int updateUserNickName(@Param("id") String id, @Param("nickName") String nickName);
-//
-//    @Update("update tbl_user set sex=#{sex} where id=#{id}")
-//    int updateUserSex(@Param("id") String id, @Param("sex") int sex);
-//
-//    @Insert("insert into tbl_user (id, account_id, nick_name, sex, status, total_profit, wxs_open_id, create_time) "
-//            + "values (#{model.id}, #{model.accountId},#{model.nickName},#{model.sex},#{model.status},#{model.totalProfit},#{model.wxsOpenId},#{model.createTime})")
-//    int addUser(@Param("model") UserModel model);
-//
-//    @Select("select * from tbl_user where account_id=#{accountId} and status=0 limit 1")
-//    @Results({
-//        @Result(property = "id", column = "id"),
-//        @Result(property = "accountId", column = "account_id"),
-//        @Result(property = "nickName", column = "nick_name"),
-//        @Result(property = "sex", column = "sex"),
-//        @Result(property = "status", column = "status"),
-//        @Result(property = "totalProfit", column = "total_profit"),
-//        @Result(property = "wxsOpenId", column = "wxs_open_id"),
-//        @Result(property = "createTime", column = "create_time")
-//    })
-//    UserModel queryUserByAccountId(@Param("accountId") String accountId);
+    @Select("select * from tbl_obj_type")
+    @Results({
+            @Result(property = "oid", column = "oid"),
+            @Result(property = "objectName", column = "object_name"),
+            @Result(property = "unitPrice", column = "unit_price"),
+            @Result(property = "remark", column = "remark")
+    })
+    List<ObjTypeModel> queryObjTypes();
+
 }

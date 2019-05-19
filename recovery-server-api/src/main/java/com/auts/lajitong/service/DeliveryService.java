@@ -1,11 +1,24 @@
 package com.auts.lajitong.service;
 
-import com.auts.lajitong.model.dao.LitteredhatDeliveryListModel;
+import com.auts.lajitong.model.common.ResponseData;
 
-import java.util.List;
-
+/**
+ * 投递相关
+ * @author zqh
+ */
 public interface DeliveryService {
 
-    List<LitteredhatDeliveryListModel> getListByUser(String userId) throws Exception;
+    /**
+     * 回收物品识别
+     * @param data
+     * @return
+     */
+    ResponseData know(String data);
 
+    /**
+     * 获取用户投递记录
+     * @param data
+     * @return
+     */
+    ResponseData orderList(String data);
 }
