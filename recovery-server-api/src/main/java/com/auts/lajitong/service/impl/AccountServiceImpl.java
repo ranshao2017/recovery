@@ -1,5 +1,6 @@
 package com.auts.lajitong.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.auts.lajitong.api.YPSmsApi;
 import com.auts.lajitong.mapper.AccountMapper;
 import com.auts.lajitong.mapper.CaptchaMapper;
@@ -11,6 +12,7 @@ import com.auts.lajitong.consts.StatusTypeEnum;
 import com.auts.lajitong.model.response.Account;
 import com.auts.lajitong.service.AccountService;
 import com.auts.lajitong.util.DateUtils;
+import com.auts.lajitong.websocket.WebsocketServer;
 import com.baidu.aip.face.AipFace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,6 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 账户
@@ -429,6 +432,44 @@ public class AccountServiceImpl implements AccountService {
             responseData.setErr_msg("获取用户信息成功");
             responseData.setData(account);
             LOGGER.info("获取用户信息成功");
+        }
+        return responseData;
+    }
+
+    /**
+     * 扫码识别设备登录
+     *
+     * @param data
+     * @return
+     */
+    @Override
+    public ResponseData scanDevice(String data) {
+        ResponseData responseData = new ResponseData();
+        LOGGER.info("扫码识别设备登录" + data);
+        JSONObject jsonObject = new JSONObject(data);
+        String uid = jsonObject.getString("uid");
+        String deviceId = jsonObject.getString("device_id");
+        AccountModel accountModel = accountMapper.queryAccountByUid(uid);
+        if(null == accountModel){
+            LOGGER.info("不存在用户");
+            responseData.setErr_code(1);
+            responseData.setErr_msg("不存在用户");
+        }else{
+            Account account = new Account();
+            BeanUtils.copyProperties(accountModel, account);
+            Map<String, Object> map = new HashMap<>();
+            map.put("data_type", "user");
+            map.put("data", account);
+            //调用websocket链接推送消息
+            boolean sendResult = WebsocketServer.sendMsg(JSON.toJSONString(map), deviceId);
+            if(sendResult){
+                //成功
+                responseData.setErr_code(0);
+                responseData.setErr_msg("向终端设备推送用户信息成功");
+            }else{
+                responseData.setErr_code(1);
+                responseData.setErr_msg("向终端设备推送用户信息失败");
+            }
         }
         return responseData;
     }

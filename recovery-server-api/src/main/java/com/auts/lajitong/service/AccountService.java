@@ -64,4 +64,11 @@ public interface AccountService {
      * @return
      */
     ResponseData getUser(String data);
+
+    /**
+     * 扫码识别设备登录
+     * @param data
+     * @return
+     */
+    ResponseData scanDevice(String data);
 }
