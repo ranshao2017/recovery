@@ -168,4 +168,22 @@ public class AccountController {
         return accountService.getUser(data);
     }
 
+    /**
+     * 扫码识别设备登录
+     *
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/scanDevice")
+    public ResponseData scanDevice(HttpServletRequest request) {
+        String data = RequestUtil.buildReq(request);
+        if (null == data) {
+            ResponseData responseData = new ResponseData();
+            responseData.setErr_code(1);
+            responseData.setErr_msg("获取请求参数异常");
+            return responseData;
+        }
+        return accountService.scanDevice(data);
+    }
+
 }

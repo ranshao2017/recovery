@@ -13,8 +13,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 //import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 //import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 //import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
+import org.springframework.web.socket.config.annotation.EnableWebSocket;
+import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 //import org.springframework.web.client.RestTemplate;
 
 /**
@@ -24,6 +27,7 @@ import org.springframework.context.annotation.PropertySources;
 @SpringBootApplication(scanBasePackages = { "com.auts.lajitong.**" })
 @PropertySources({ @PropertySource(value = "classpath:application.properties", ignoreResourceNotFound = true) })
 @MapperScan("com.auts.lajitong.mapper.**")
+@EnableWebSocket
 //@EnableCircuitBreaker
 //@EnableDiscoveryClient
 //@EnableEurekaClient
@@ -52,6 +56,17 @@ public class LajitongServerMain {
         SpringApplication.run(LajitongServerMain.class, args);
 
         logger.info("Lajitong server startup success!");
+    }
+
+    /**
+     * 会自动注册使用了@ServerEndpoint注解声明的Websocket endpoint
+     * 要注意，如果使用独立的servlet容器，
+     * 而不是直接使用springboot的内置容器，
+     * 就不要注入ServerEndpointExporter，因为它将由容器自己提供和管理。
+     */
+    @Bean
+    public ServerEndpointExporter serverEndpointExporter() {
+        return new ServerEndpointExporter();
     }
 
 }
