@@ -32,7 +32,7 @@ public class DeliveryController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/know")
+    @RequestMapping("/equipment/know")
     public ResponseData know(HttpServletRequest request) {
         String data = RequestUtil.buildReq(request);
         if (null == data) {
@@ -50,7 +50,7 @@ public class DeliveryController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/orderList")
+    @RequestMapping("/equipment/orderList")
     public ResponseData orderList(HttpServletRequest request) {
         String data = RequestUtil.buildReq(request);
         if (null == data) {

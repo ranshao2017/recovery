@@ -50,11 +50,6 @@ public class AccountServiceImpl implements AccountService {
     @Value("${baidu.imageType}")
     private String imageType;
 
-    /**
-     * 百度AI，单实例使用 避免重复获取access_token
-     */
-    AipFace client = new AipFace(APP_ID, API_KEY, SECRET_KEY);
-
     @Autowired
     CaptchaMapper captchaMapper;
     @Autowired
@@ -195,15 +190,14 @@ public class AccountServiceImpl implements AccountService {
         LOGGER.info("人脸登录请求数据：" + data);
 
         HashMap<String, String> options = new HashMap<>();
-        client.setConnectionTimeoutInMillis(2000);
-        client.setSocketTimeoutInMillis(60000);
         //返回对比度最高的那张脸
         options.put("max_user_num", "1");
         // 人脸搜索
-        JSONObject res = client.search(image, imageType, "01", options);
+        JSONObject res = getClient().search(image, imageType, "01", options);
         LOGGER.info("调用百度AI人像检索，获取到信息：" + res.toString());
-        int error_code = res.getInt("error_code");
-        if(error_code != 0){
+        String error_code = res.getString("error_msg");
+        if(!"SUCCESS".equals(error_code)){
+            LOGGER.info("人像检索失败" + res.toString());
             responseData.setErr_code(1);
             responseData.setErr_msg("人像检索失败");
         }else{
@@ -256,14 +250,11 @@ public class AccountServiceImpl implements AccountService {
         try {
             HashMap<String, String> options = new HashMap<>();
             options.put("mobile", mobile);
-            client.setConnectionTimeoutInMillis(5000);
-            client.setSocketTimeoutInMillis(60000);
-
             //先删除已有的人像信息
-            client.deleteUser("01", mobile, options);
+            getClient().deleteUser("01", mobile, options);
             LOGGER.info("调用百度AI删除已有的人像信息成功");
             //再新增新的人像信息
-            JSONObject res = client.addUser(image, imageType, "01", mobile, options);
+            JSONObject res = getClient().addUser(image, imageType, "01", mobile, options);
             LOGGER.info("调用百度AI接口新增新的人像信息，返回数据：" + res.toString());
             String status = res.getString("error_msg");
             if (!"SUCCESS".equals(status)) {
@@ -361,8 +352,8 @@ public class AccountServiceImpl implements AccountService {
         LOGGER.info("IC卡注册" + data);
         JSONObject jsonObject = new JSONObject(data);
         String card = jsonObject.getString("card");
-        String mobile = jsonObject.getString("card");
-        String code = jsonObject.getString("card");
+        String mobile = jsonObject.getString("mobile");
+        String code = jsonObject.getString("code");
         //验证码模块
         boolean sms = this.verificationSms(mobile, code);
         if(!sms){
@@ -509,6 +500,20 @@ public class AccountServiceImpl implements AccountService {
             return false;
 		}
 
+    }
+
+    /**
+     * 百度AI，单实例使用 避免重复获取access_token
+     */
+    AipFace client = null;
+
+    private AipFace getClient() {
+        if(null == client){
+            client = new AipFace(APP_ID, API_KEY, SECRET_KEY);
+            client.setConnectionTimeoutInMillis(2000);
+            client.setSocketTimeoutInMillis(60000);
+        }
+        return client;
     }
 
 }

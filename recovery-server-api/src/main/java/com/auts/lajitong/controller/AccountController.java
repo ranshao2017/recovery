@@ -33,7 +33,7 @@ public class AccountController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/sendSms")
+    @RequestMapping("/equipment/sendSms")
     public ResponseData sendSms(HttpServletRequest request) {
         String data = RequestUtil.buildReq(request);
         if (null == data) {
@@ -51,7 +51,7 @@ public class AccountController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/phoneLogin")
+    @RequestMapping("/equipment/phoneLogin")
     public ResponseData phoneLogin(HttpServletRequest request) {
         String data = RequestUtil.buildReq(request);
         if (null == data) {
@@ -69,7 +69,7 @@ public class AccountController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/phoneCodeLogin")
+    @RequestMapping("/equipment/phoneCodeLogin")
     public ResponseData phoneCodeLogin(HttpServletRequest request) {
         String data = RequestUtil.buildReq(request);
         if (null == data) {
@@ -85,7 +85,7 @@ public class AccountController {
      * 人脸识别登录
      */
     @ResponseBody
-    @RequestMapping("/faceLogin")
+    @RequestMapping("/equipment/faceLogin")
     public ResponseData faceLogin(HttpServletRequest request) {
         String data = RequestUtil.buildReq(request);
         if (null == data) {
@@ -102,7 +102,7 @@ public class AccountController {
      * 人脸识别注册
      */
     @ResponseBody
-    @RequestMapping("/faceRegister")
+    @RequestMapping("/equipment/faceRegister")
     public ResponseData faceRegister(HttpServletRequest request) {
         String data = RequestUtil.buildReq(request);
         if (null == data) {
@@ -120,7 +120,7 @@ public class AccountController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/icLogin")
+    @RequestMapping("/equipment/icLogin")
     public ResponseData icLogin(HttpServletRequest request) {
         String data = RequestUtil.buildReq(request);
         if (null == data) {
@@ -138,7 +138,7 @@ public class AccountController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/icRegister")
+    @RequestMapping("/equipment/icRegister")
     public ResponseData icRegister(HttpServletRequest request) {
         String data = RequestUtil.buildReq(request);
         if (null == data) {
@@ -156,7 +156,7 @@ public class AccountController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/getUser")
+    @RequestMapping("/equipment/getUser")
     public ResponseData getUser(HttpServletRequest request) {
         String data = RequestUtil.buildReq(request);
         if (null == data) {
@@ -174,7 +174,7 @@ public class AccountController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("/scanDevice")
+    @RequestMapping("/equipment/scanDevice")
     public ResponseData scanDevice(HttpServletRequest request) {
         String data = RequestUtil.buildReq(request);
         if (null == data) {

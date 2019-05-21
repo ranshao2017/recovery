@@ -55,11 +55,6 @@ public class DeliveryServiceImpl implements DeliveryService {
     private String imageDir;
 
     /**
-     * 百度AI，单实例使用 避免重复获取access_token
-     */
-    AipImageClassify client = new AipImageClassify(APP_ID, API_KEY, SECRET_KEY);
-
-    /**
      * 回收物品识别
      *
      * @param data
@@ -81,22 +76,18 @@ public class DeliveryServiceImpl implements DeliveryService {
             responseData.setErr_msg("识别图像保存异常");
             return responseData;
         }
-        client.setConnectionTimeoutInMillis(2000);
-        client.setSocketTimeoutInMillis(60000);
+
         HashMap<String, String> options = new HashMap<>();
         //百科词条数 1
         options.put("baike_num", "1");
-        JSONObject res = client.advancedGeneral(savePath, options);
+        JSONObject res = getClient().advancedGeneral(savePath, options);
         LOGGER.info("请求百度通用物体识别，接收到返回信息：" + res.toString());
-//        System.out.println(res.toString(2));
-        int error_code = res.getInt("error_code");
-        if(0 != error_code){
+        JSONArray jsonArray = res.getJSONArray("result");
+        if(null == jsonArray || jsonArray.length() == 0){
             responseData.setErr_code(1);
             responseData.setErr_msg("图像识别失败");
             LOGGER.error("请求百度通用物体识别，失败");
         }else{
-            JSONObject result = res.getJSONObject("result");
-            JSONArray jsonArray = result.getJSONArray("result");
             //默认获取第一条
             JSONObject info = jsonArray.getJSONObject(0);
             String name = info.getString("keyword");
@@ -178,7 +169,7 @@ public class DeliveryServiceImpl implements DeliveryService {
             dir.mkdirs();
         }
         String uuid = UUID.randomUUID().toString().replace("-","");
-        String savePath = imageDir + "/" + uuid + ".jpg";
+        String savePath = imageDir + "\\" + uuid + ".jpg";
         LOGGER.info("识别图片保存目录" + savePath);
         BufferedOutputStream bos = null;
         java.io.FileOutputStream fos = null;
@@ -208,6 +199,20 @@ public class DeliveryServiceImpl implements DeliveryService {
             }
         }
         return savePath;
+    }
+
+    /**
+     * 百度AI，单实例使用 避免重复获取access_token
+     */
+    AipImageClassify client = null;
+
+    private AipImageClassify getClient() {
+        if(null == client){
+            client = new AipImageClassify(APP_ID, API_KEY, SECRET_KEY);
+            client.setConnectionTimeoutInMillis(2000);
+            client.setSocketTimeoutInMillis(60000);
+        }
+        return client;
     }
 
 }
