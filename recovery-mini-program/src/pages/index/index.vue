@@ -1,12 +1,15 @@
 <template>
     <div class="page-index">
-        <swiper autoplay class="swiper-content">
+        <!--<swiper autoplay class="swiper-content">
             <swiper-item :key="index" v-for="(item, index) in bannerList" class="swiper-slide">
                 <div class="swiper-slide-img-wrapper">
                     <image mode="aspectFit" class="slide-image" :src="item.url"></image>
                 </div>
             </swiper-item>
-        </swiper>
+        </swiper>-->
+        <div class="banner">
+            <img mode="widthFix" src="../../assets/imgs/banner.png" alt="">
+        </div>
         <div class="nav-list">
             <div @click="navItem(index)" class="nav-item" v-for="(item, index) in navList" :key="index">
                 <img :class="'img'+index" mode="widthFix" :src="item.icon" alt="">
@@ -64,14 +67,14 @@
         data() {
             return {
                 navList: [{
+                    title: "回收分类",
+                    icon: require("../../assets/imgs/icon_type.png")
+                }, {
                     title: "附近回收机",
                     icon: require("../../assets/imgs/icon_near.png")
                 }, {
                     title: "投递指南",
                     icon: require("../../assets/imgs/icon_guide.png")
-                }, {
-                    title: "大件上门回收",
-                    icon: require("../../assets/imgs/icon_take.png")
                 }, {
                     title: "个人中心",
                     icon: require("../../assets/imgs/icon_user.png")
@@ -148,40 +151,13 @@
             navItem(index) {
                 switch (index) {
                     case 0:
-                        // wx.getLocation({
-                        //     success: res => {
-                        //         console.log(res);
-                        //         this.visible = false;
-                        //         this.$router.push({
-                        //             path: `/pages/near/main?latitude=${res.latitude}&longitude=${res.longitude}`
-                        //         });
-                        //         // wx.chooseLocation({
-                        //         //     success: res => {
-                        //         //         console.log(res);
-                        //         //         this.$router.push({
-                        //         //             path: `/pages/near/main?latitude=${res.latitude}&longitude=${res.longitude}`
-                        //         //         });
-                        //         //     }
-                        //         // });
-                        //     },
-                        //     fail: err => {
-                        //         this.visible = true;
-                        //     }
-                        // });
-
-                        this.$toast("当前城市尚未开通服务，敬请期待");
-                        // this.$router.push({
-                        //     path: "/pages/near/main"
-                        // });
+                        this.$toast("该功能即将开放，敬请期待");
                         break;
                     case 1:
-                            this.$router.push({
-                                path: "/pages/guide/main"
-                            });
-                        // this.$toast("当前城市尚未开通服务，敬请期待");
+                        this.$toast("该功能即将开放，敬请期待");
                         break;
                     case 2:
-                        this.$toast("当前城市尚未开通服务，敬请期待");
+                        this.$toast("该功能即将开放，敬请期待");
                         break;
                     case 3:
                         if (this.checkLogin()) return;
@@ -241,9 +217,14 @@
             }
 
         }
+        .banner {
+            display: flex;
+            margin: 2px 4px;
+        }
         .nav-list {
             display: flex;
             padding: 10px 0;
+            margin-top: 14px;
             .nav-item {
                 flex: 1;
                 text-align: center;
@@ -259,16 +240,16 @@
                     margin: 0 auto 10px;
                 }
                 .img0 {
-                    width: 24px;
+                    width: 47px;
                 }
                 .img1 {
-                    width: 31px;
+                    width: 42px;
                 }
                 .img2 {
-                    width: 43px;
+                    width: 55px;
                 }
                 .img3 {
-                    width: 28px;
+                    width: 40px;
                 }
             }
         }
