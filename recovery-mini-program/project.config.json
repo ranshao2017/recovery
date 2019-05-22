@@ -1,0 +1,80 @@
+{
+	"description": "项目配置文件。",
+	"setting": {
+		"urlCheck": false,
+		"es6": true,
+		"postcss": true,
+		"minified": true,
+		"newFeature": true
+	},
+	"miniprogramRoot": "dist/",
+	"compileType": "miniprogram",
+	"appid": "touristappid",
+	"projectname": "%E6%99%BA%E8%83%BD%E5%9B%9E%E6%94%B6%E7%AE%B1",
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"currentL": -1,
+			"list": []
+		},
+		"miniprogram": {
+			"current": 0,
+			"list": [
+				{
+					"id": 0,
+					"name": "yue",
+					"pathName": "pages/withdrawal/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 1,
+					"name": "current2",
+					"pathName": "pages/wallet/main",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "bind",
+					"pathName": "pages/bindCard/main",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "w",
+					"pathName": "pages/withdrawal/main",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "setting",
+					"pathName": "pages/setting/main",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "idea",
+					"pathName": "pages/idea/main",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "ideaList",
+					"pathName": "pages/ideaList/main",
+					"query": ""
+				}
+			]
+		}
+	}
+}

@@ -1,0 +1,29 @@
+{
+    "pages": [
+        "pages/index/main",
+        "pages/demo/main",
+        "pages/login/main",
+        "pages/verifyCode/main",
+        "pages/helpCenter/main",
+        "pages/user/main",
+        "pages/wallet/main",
+        "pages/walletDetail/main",
+        "pages/delivery/main",
+        "pages/aboutUs/main",
+        "pages/setting/main",
+        "pages/qrcode/main",
+        "pages/near/main",
+        "pages/withdrawal/main",
+        "pages/bindCard/main",
+        "pages/idea/main",
+        "pages/ideaList/main",
+        "pages/guide/main",
+        "pages/test/main"
+    ],
+    "window": {
+        "backgroundTextStyle": "light",
+        "navigationBarBackgroundColor": "#fff",
+        "navigationBarTitleText": "WeChat",
+        "navigationBarTextStyle": "black"
+    }
+}

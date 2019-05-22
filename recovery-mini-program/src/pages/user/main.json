@@ -1,0 +1,11 @@
+{
+    "usingComponents": {
+        "i-cell-group": "../../../static/iview/cell-group/index",
+        "i-cell": "../../../static/iview/cell/index",
+        "i-modal": "../../../static/iview/modal/index",
+        "i-input": "../../../static/iview/input/index"
+    },
+    "navigationBarTitleText": "个人中心",
+    "navigationBarBackgroundColor": "#f5d739",
+    "navigationBarTextStyle": "white"
+}
