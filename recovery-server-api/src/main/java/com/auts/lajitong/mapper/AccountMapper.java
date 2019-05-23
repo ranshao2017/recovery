@@ -88,5 +88,5 @@ public interface AccountMapper {
             @Result(property = "icCard", column = "ic_card"),
             @Result(property = "createTime", column = "create_time")
     })
-    AccountModel queryAccountByUid(@Param("uid") String uid);
+    AccountModel queryAccountByUid(@Param("uid") int uid);
 }

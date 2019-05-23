@@ -46,19 +46,18 @@
                 if (this.btnIsDisabled) return;
                 if (isForbidden()) return;
                 this.loading = true;
-                let res = await this.$get(API.getCode, {
-                    accountId: this.mobile
-                });
+                let res = await this.$post(API.getCode, {
+                    mobile: this.mobile
+                }, false);
                 this.loading = false;
-                if(res.status !== 200) return
+                if(res.err_code !== 0) return;
                 this.$router.push({
                     path: "/pages/verifyCode/main",
                     query: {
                         mobile: this.mobile
                     }
                 });
-                Object.assign(this.$data, this.$options.data())
-
+                Object.assign(this.$data, this.$options.data());
             },
             // 输入手机号码
             handleChangeValue(e) {

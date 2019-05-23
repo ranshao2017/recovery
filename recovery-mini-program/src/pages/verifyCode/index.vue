@@ -59,10 +59,10 @@
             // 发送获取验证码
             async handleGetCode() {
                 this.autoFocus = true;
-                let res = await this.$get(API.getCode, {
-                    accountId: this.mobile
-                });
-                if (res.status === 200) {
+                let res = await this.$post(API.getCode, {
+                    mobile: this.mobile
+                }, false);
+                if (res.err_code === 0) {
                     this.setCountDown();
                 }
             },
@@ -75,15 +75,15 @@
                 console.log(e.mp.detail);
                 if(e.mp.detail.length === 6) {
                     let res = await this.$post(API.login, {
-                        accountId: this.mobile,
-                        smscode: e.mp.detail
-                    })
-                    if(res.status === 200) {
+                        mobile: this.mobile,
+                        code: e.mp.detail
+                    }, false)
+                    if(res.err_code === 0) {
                         console.log(`--------`);
                         console.log(res);
                         console.log(`--------`);
                         wx.setStorageSync('isLogin', true);
-                        wx.setStorageSync('userId', res.result.id);
+                        wx.setStorageSync('userId', res.data.uid);
                         clearInterval(this.timer)
                         this.$router.go(2)
                     }

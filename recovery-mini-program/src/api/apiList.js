@@ -1,19 +1,19 @@
 export default {
-    baseUrlForDev: 'https://xiaoredcap.com/', // 测试环境
+    baseUrlForDev: 'http://127.0.0.1:8280/', // 测试环境
 
-    baseUrlForProd: 'https://xiaoredcap.com/', // 生产环境
+    baseUrlForProd: 'http://127.0.0.1:8280/', // 生产环境
 
     // banner
     banner: 'littleredhat//v1/get_banners',
 
     // 获取验证码
-    getCode: 'littleredhat/users/v1/verification',
+    getCode: 'equipment/sendSms',
 
     // 登录校验
-    login: 'littleredhat/users/v1/login',
+    login: 'equipment/phoneCodeLogin',
 
     // 获取个人信息
-    getUserInfo: 'littleredhat/users/v1/infos',
+    getUserInfo: 'equipment/getUser',
 
     // 投递记录
     deliveryList: 'littleredhat//v1/delivery/lists',

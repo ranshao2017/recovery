@@ -1,12 +1,5 @@
 <template>
     <div class="page-index">
-        <!--<swiper autoplay class="swiper-content">
-            <swiper-item :key="index" v-for="(item, index) in bannerList" class="swiper-slide">
-                <div class="swiper-slide-img-wrapper">
-                    <image mode="aspectFit" class="slide-image" :src="item.url"></image>
-                </div>
-            </swiper-item>
-        </swiper>-->
         <div class="banner">
             <img mode="widthFix" src="../../assets/imgs/banner.png" alt="">
         </div>
@@ -22,26 +15,18 @@
             </div>
         </div>
         <div class="card-list">
-            <div class="card-item card-green-gold">
+            <div class="card-item">
                 <div class="title">
-                    <h5>我的环保金</h5>
+                    <h5>环保金奖励</h5>
                     <p>{{greenGold}} <span>元</span></p>
-                </div>
-                <div @click="goWallet" class="link">我的钱包
-                    <div class="icon-wrapper">
-                        <i-icon color="#666" type="enter"/>
-                    </div>
+                    <div class="link">微信提现</div>
                 </div>
             </div>
-            <div class="card-item card-count">
+            <div class="card-item">
                 <div class="title">
                     <h5>累计投递</h5>
                     <p>{{count}} <span>次</span></p>
-                </div>
-                <div @click="goDelivery" class="link">查看记录
-                    <div class="icon-wrapper">
-                        <i-icon color="#666" type="enter"/>
-                    </div>
+                    <div class="link">查看记录</div>
                 </div>
             </div>
         </div>
@@ -49,19 +34,14 @@
             <div class="icon-wrapper">
                 <i-icon size="20" color="#fff" type="scan"/>
             </div>
-            <div class="txt">生成二维码投递</div>
+            <div class="txt">扫描二维码投递</div>
         </div>
-        <i-modal title="授权提示" :visible="visible" :show-cancel="false" :show-ok="false">
-            <view style="padding: 0 15px">附近回收机需要获取当前地址位置，请点击授权</view>
-            <button @click="settingClick" class="btn-setting" open-type="openSetting">授权</button>
-        </i-modal>
     </div>
 </template>
 
 <script>
     import { isForbidden } from "utils/stopRequest";
     import API from "api/apiList";
-
 
     export default {
         data() {
@@ -88,8 +68,7 @@
             };
         },
         async onLoad() {
-            this.getBannerList();
-
+            // this.getBannerList();
         },
         onShow() {
             if (!wx.getStorageSync("isLogin")) {
@@ -100,7 +79,6 @@
             }
             this.loginFlag = true;
             this.getUserInfo();
-
         },
         methods: {
             settingClick() {
@@ -115,13 +93,13 @@
             async getUserInfo() {
                 if (this.checkLogin()) return;
                 let userId = wx.getStorageSync("userId");
-                const res = await this.$get(API.getUserInfo, { userId });
-                if (res.status !== 200) return;
-                wx.setStorageSync("userInfo", res.result);
-                this.greenGold = res.result.current_profit;
-                this.count = res.result.deliver_count;
-                wx.setStorageSync("bindFlag", res.result.banks && res.result.banks.length || false);
-                wx.setStorageSync("bankInfo", res.result.banks[0]);
+                const res = await this.$post(API.getUserInfo, {
+                    uid: userId
+                }, false);
+                if (res.err_code !== 0) return;
+                wx.setStorageSync("userInfo", res.data);
+                this.greenGold = res.data.s_current_profit;
+                this.count = res.data.deliver_count;
             },
             // banner
             async getBannerList() {
@@ -132,10 +110,14 @@
             },
             code() {
                 if (this.checkLogin()) return;
-                this.$router.push({
-                    path: "/pages/qrcode/main"
-                });
-
+                wx.scanCode({
+                    success(res) {
+                        console.log(res)
+                    },
+                    fail(res) {
+                        console.log(res)
+                    }
+                })
             },
             closeQcode() {
                 this.qcodeShowFlag = false;
@@ -278,13 +260,11 @@
         }
         .card-list {
             .card-item {
-                box-shadow: 0 0 4px rgba(0, 0, 0, .1);
-                width: 93%;
                 margin: 20px auto 0;
-                border-radius: 6px;
                 padding: 15px;
-                display: flex;
-                position: relative;
+                width: 50%;
+                float: left;
+                text-align: center;
                 .title {
                     h5 {
                         font-size: @fs14;
@@ -301,16 +281,9 @@
                     }
                 }
                 .link {
-                    position: absolute;
-                    top: 50%;
-                    right: 15px;
-                    transform: translate(0, -50%);
                     font-size: @fs14;
                     color: @fontColor9;
-                    border: 1 rpx solid @fontColor9;
                     padding: 4px 10px;
-                    border-radius: 20px;
-                    display: flex;
                     align-items: center;
                     &:active {
                         opacity: .8;

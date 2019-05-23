@@ -30,7 +30,8 @@ import java.util.Map;
 public class YPSmsApi {
 
 	//修改为您的apikey.apikey可在官网（http://www.yuanpian.com)登录后获取
-	public static final String API_KEY = "ac49a13cd1efd478d3eb39f5c5a7e12b";
+	public static final String API_KEY = "11925f4b90680e82d9d3d4aa9c02f0f7";
+//    ac49a13cd1efd478d3eb39f5c5a7e12b
 	public static String CAPTCHA_TEXT = "【小红帽回收】您的验证码是%s";
 
     //查账户信息的http地址

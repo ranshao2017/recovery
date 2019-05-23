@@ -34,7 +34,7 @@
 				{
 					"id": 0,
 					"name": "yue",
-					"pathName": "pages/withdrawal/main",
+					"pathName": "pages/index/main",
 					"query": "",
 					"scene": null
 				},

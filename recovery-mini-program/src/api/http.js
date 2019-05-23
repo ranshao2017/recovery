@@ -25,7 +25,7 @@ fly.interceptors.request.use(
         }
         // 处理各种请求
         config.headers = {
-            "content-type": "application/x-www-form-urlencoded",
+            "content-type": "application/json",
             "Authorization": userId ? userId : null
 
         };
@@ -67,9 +67,9 @@ function errorState(err, reject) {
  * @resolve resolve promise返回函数
  */
 function successState(res, resolve) {
-    if (res.status !== 200) {
-        console.log(res.message);
-        self.$toast(res.message);
+    if (res.err_code !== 0) {
+        console.log(res.err_msg);
+        self.$toast(res.err_msg);
     }
     resolve(res);
 }

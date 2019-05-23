@@ -61,13 +61,14 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public ResponseData sendSms(String data) {
         ResponseData responseData = new ResponseData();
+        LOGGER.info("发送短信验证码" + data);
         JSONObject jsonObject = new JSONObject(data);
         try {
             //发送验证码短信
             String captchaCode = YPSmsApi.getRandCaptchaCode();
             String result = YPSmsApi.sendSms(YPSmsApi.API_KEY, String.format(YPSmsApi.CAPTCHA_TEXT, captchaCode), jsonObject.getString("mobile"));
             if(result.contains("发送成功")) {
-                LOGGER.info("发送短信验证码成功：" + jsonObject.getString("mobile") + "-" + jsonObject.getString("device_id") + "-" + captchaCode);
+                LOGGER.info("发送短信验证码成功：" + jsonObject.getString("mobile") + "-" + captchaCode);
                 CaptchaModel cm = new CaptchaModel();
                 cm.setPhoneNo(jsonObject.getString("mobile"));
                 cm.setCaptchaCode(captchaCode);
@@ -80,11 +81,12 @@ public class AccountServiceImpl implements AccountService {
                 responseData.setErr_code(0);
                 responseData.setErr_msg("验证码发送成功");
             } else {
+                LOGGER.info("发送短信验证码失败：" + jsonObject.getString("mobile") + "-" + captchaCode);
                 responseData.setErr_code(1);
                 responseData.setErr_msg("验证码发送失败");
             }
         } catch (Exception e) {
-            LOGGER.error("验证码获取异常" + jsonObject.getString("mobile") + "-" + jsonObject.getString("device_id"), e);
+            LOGGER.error("验证码获取异常" + jsonObject.getString("mobile"), e);
             responseData.setErr_code(1);
             responseData.setErr_msg("验证码发送异常");
         }
@@ -99,10 +101,9 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public ResponseData phoneLogin(String data) {
         ResponseData responseData = new ResponseData();
+        LOGGER.info("手机号码登录" + data);
         JSONObject jsonObject = new JSONObject(data);
         String mobile = jsonObject.getString("mobile");
-        String device_id = jsonObject.getString("device_id");
-        LOGGER.info("手机号码登录" + mobile + "-" + device_id);
         AccountModel accountModel = accountMapper.queryAccountByPhone(mobile);
         if(null == accountModel) {
             LOGGER.error("根据登录手机号未找到用户" + mobile);
@@ -127,16 +128,16 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public ResponseData phoneCodeLogin(String data) {
         ResponseData responseData = new ResponseData();
+        LOGGER.error("验证验证码" + data);
         JSONObject jsonObject = new JSONObject(data);
         String mobile = jsonObject.getString("mobile");
         String code = jsonObject.getString("code");
-        String device_id = jsonObject.getString("device_id");
         //验证码模块
         boolean sms = this.verificationSms(mobile, code);
         if(!sms){
             responseData.setErr_code(1);
             responseData.setErr_msg("验证验证码失败");
-            LOGGER.error("验证验证码失败" + mobile + "-" + code + "-" + device_id);
+            LOGGER.error("验证验证码失败" + mobile + "-" + code);
             return responseData;
         }
         AccountModel accountModel = accountMapper.queryAccountByPhone(mobile);
@@ -161,7 +162,7 @@ public class AccountServiceImpl implements AccountService {
             responseData.setErr_code(0);
             responseData.setErr_msg("手机号码注册成功");
             responseData.setData(account);
-            LOGGER.info("手机号码注册成功" + mobile + "-" + code + "-" + device_id);
+            LOGGER.info("手机号码注册成功" + mobile + "-" + code);
         }else{
             //登录
             Account account = new Account();
@@ -169,7 +170,7 @@ public class AccountServiceImpl implements AccountService {
             responseData.setErr_code(0);
             responseData.setErr_msg("手机号码登录成功");
             responseData.setData(account);
-            LOGGER.info("手机号码登录成功" + mobile + "-" + code + "-" + device_id);
+            LOGGER.info("手机号码登录成功" + mobile + "-" + code);
         }
         return responseData;
     }
@@ -186,7 +187,6 @@ public class AccountServiceImpl implements AccountService {
         JSONObject jsonObject = new JSONObject(data);
         //读取人像后BASE64编码
         String image = jsonObject.getString("image");
-        String device_id = jsonObject.getString("device_id");
         LOGGER.info("人脸登录请求数据：" + data);
 
         HashMap<String, String> options = new HashMap<>();
@@ -410,7 +410,7 @@ public class AccountServiceImpl implements AccountService {
         ResponseData responseData = new ResponseData();
         LOGGER.info("获取用户信息" + data);
         JSONObject jsonObject = new JSONObject(data);
-        String uid = jsonObject.getString("uid");
+        int uid = jsonObject.getInt("uid");
         AccountModel accountModel = accountMapper.queryAccountByUid(uid);
         if(null == accountModel){
             LOGGER.info("不存在用户");
@@ -438,7 +438,7 @@ public class AccountServiceImpl implements AccountService {
         ResponseData responseData = new ResponseData();
         LOGGER.info("扫码识别设备登录" + data);
         JSONObject jsonObject = new JSONObject(data);
-        String uid = jsonObject.getString("uid");
+        int uid = jsonObject.getInt("uid");
         String deviceId = jsonObject.getString("device_id");
         AccountModel accountModel = accountMapper.queryAccountByUid(uid);
         if(null == accountModel){
