@@ -3,9 +3,6 @@ export default {
 
     baseUrlForProd: 'http://127.0.0.1:8280/', // 生产环境
 
-    // banner
-    banner: 'littleredhat//v1/get_banners',
-
     // 获取验证码
     getCode: 'equipment/sendSms',
 
@@ -14,6 +11,9 @@ export default {
 
     // 获取个人信息
     getUserInfo: 'equipment/getUser',
+
+    // 扫码识别设备
+    scanDevice: 'equipment/scanDevice',
 
     // 投递记录
     deliveryList: 'littleredhat//v1/delivery/lists',

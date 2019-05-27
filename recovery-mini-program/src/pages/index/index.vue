@@ -67,8 +67,26 @@
                 hasClick: false
             };
         },
-        async onLoad() {
-            // this.getBannerList();
+        async onLoad(options) {
+            if (options.q !== undefined) {
+                console.log("获取到options");
+                if (this.checkLogin()) return;
+                let scan_url = decodeURIComponent(options.q);
+                console.log(scan_url);
+                let deviceId = scan_url.replace(API.baseUrlForProd,'');
+                let userId = wx.getStorageSync("userId");
+                let res = await this.$post(API.scanDevice, {
+                    device_id: deviceId,
+                    uid: userId
+                }, false);
+                if(res.err_code === 0) {
+                    this.$toast("扫码识别设备成功");
+                }else{
+                    this.$toast("扫码识别设备失败");
+                }
+            }else{
+                console.log("未获取到options");
+            }
         },
         onShow() {
             if (!wx.getStorageSync("isLogin")) {
@@ -112,16 +130,24 @@
                 if (this.checkLogin()) return;
                 wx.scanCode({
                     success(res) {
-                        console.log(res)
+                        console.log(res);
+                        let deviceId = res.result.replace(API.baseUrlForProd,'');
+                        let userId = wx.getStorageSync("userId");
+                        let result = this.$post(API.scanDevice, {
+                            device_id: deviceId,
+                            uid: userId
+                        }, false);
+                        if(result.err_code === 0) {
+                            this.$toast("扫码识别设备成功");
+                        }else{
+                            this.$toast("扫码识别设备失败");
+                        }
                     },
                     fail(res) {
-                        console.log(res)
+                        this.$toast("扫码识别设备失败");
+                        console.log(res);
                     }
                 })
-            },
-            closeQcode() {
-                this.qcodeShowFlag = false;
-                // this.qrcode = null;
             },
             checkLogin() {
                 if (wx.getStorageSync("isLogin")) return false;

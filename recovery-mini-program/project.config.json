@@ -9,8 +9,10 @@
 	},
 	"miniprogramRoot": "dist/",
 	"compileType": "miniprogram",
-	"appid": "touristappid",
+	"appid": "wx0b1c6dfc7ae0bd3c",
 	"projectname": "%E6%99%BA%E8%83%BD%E5%9B%9E%E6%94%B6%E7%AE%B1",
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
 	"condition": {
 		"search": {
 			"current": -1,

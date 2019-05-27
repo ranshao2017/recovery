@@ -39,7 +39,6 @@
         onShow() {
             this.check()
         },
-
         methods: {
             // 获取验证码
             async handleGetCode() {
