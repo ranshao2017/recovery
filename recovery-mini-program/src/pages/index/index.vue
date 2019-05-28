@@ -131,23 +131,28 @@
                 wx.scanCode({
                     success(res) {
                         console.log(res);
-                        let deviceId = res.result.replace(API.baseUrlForProd,'');
+                        let deviceId = res.result.replace(API.baseUrlForProd + 'equipment/','');
                         let userId = wx.getStorageSync("userId");
-                        let result = this.$post(API.scanDevice, {
-                            device_id: deviceId,
-                            uid: userId
-                        }, false);
-                        if(result.err_code === 0) {
-                            this.$toast("扫码识别设备成功");
-                        }else{
-                            this.$toast("扫码识别设备失败");
-                        }
+                        scanDevice(deviceId, userId);
                     },
                     fail(res) {
                         this.$toast("扫码识别设备失败");
                         console.log(res);
                     }
                 })
+            },
+            scanDevice(deviceId, userId) {
+                console.log("deviceId:" + deviceId);
+                console.log("userId:" + userId);
+                let result = this.$post(API.scanDevice, {
+                    device_id: deviceId,
+                    uid: userId
+                }, false);
+                if(result.err_code === 0) {
+                    this.$toast("扫码识别设备成功");
+                }else{
+                    this.$toast("扫码识别设备失败");
+                }
             },
             checkLogin() {
                 if (wx.getStorageSync("isLogin")) return false;
