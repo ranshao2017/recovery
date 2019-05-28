@@ -1,6 +1,7 @@
 package com.auts.lajitong.model.response;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
 
@@ -12,16 +13,20 @@ public class DeliveryOrder {
 
     private int tid;
     @JSONField(name = "order_no")
+    @JsonProperty(value = "order_no")
     private String orderNo;
     @JSONField(name = "device_id")
+    @JsonProperty(value = "device_id")
     private String deviceId;
     @JSONField(name = "bin_no")
+    @JsonProperty(value = "bin_no")
     private String binNo;
     private int orderType;
     private int weight;
     private int price;
     private int amount;
     @JSONField(name = "delivery_time")
+    @JsonProperty(value = "delivery_time")
     private String deliveryTime;
 
     private String s_order_type;

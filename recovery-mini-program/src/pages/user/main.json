@@ -6,6 +6,6 @@
         "i-input": "../../../static/iview/input/index"
     },
     "navigationBarTitleText": "个人中心",
-    "navigationBarBackgroundColor": "#f5d739",
+    "navigationBarBackgroundColor": "#a3e846",
     "navigationBarTextStyle": "white"
 }

@@ -1,7 +1,7 @@
 <template>
     <div class="page-user">
         <div class="avatar-wrapper">
-            <div class="bg"></div>
+            <img mode="widthFix" src="../../assets/imgs/user.png" alt="">
             <div class="avatar">
                 <div class="img"><open-data type="userAvatarUrl"></open-data></div>
                 <div class="name">{{name}}</div>
@@ -11,9 +11,7 @@
             <i-cell-group>
                 <i-cell @click="showEditName" title="用户昵称" :value="name" is-link></i-cell>
                 <i-cell title="登录手机号" :value="mobile"></i-cell>
-                <i-cell title="关于我们" is-link url="/pages/aboutUs/main"></i-cell>
                 <i-cell title="帮助中心" is-link url="/pages/helpCenter/main"></i-cell>
-                <i-cell title="绑定/更新银行卡" is-link url="/pages/bindCard/main?back=true"></i-cell>
                 <i-cell title="意见反馈" is-link url="/pages/idea/main"></i-cell>
                 <i-cell title="反馈记录" is-link url="/pages/ideaList/main"></i-cell>
                 <i-cell title="设置" is-link url="/pages/setting/main"></i-cell>
@@ -28,7 +26,6 @@
                 @change="change"
                 :value="editName"></i-input>
         </i-modal>
-
     </div>
 </template>
 
@@ -45,12 +42,8 @@
             }
         },
         onLoad() {
-            // wx.setNavigationBarColor({
-            //     frontColor: "#fff",
-            //     backgroundColor: "#"
-            // });
             const userInfo = wx.getStorageSync('userInfo');
-            this.name = userInfo.nickname;
+            this.name = userInfo.nick_name;
             console.log(`this.isShowEditName:${this.isShowEditName}`);
         },
         methods: {
@@ -79,7 +72,7 @@
         computed: {
             mobile() {
                 const userInfo = wx.getStorageSync('userInfo');
-                return `${userInfo.phonenumber.slice(0,3)}****${userInfo.phonenumber.slice(7)}`
+                return `${userInfo.account_id.slice(0,3)}****${userInfo.account_id.slice(7)}`
             }
         }
     };

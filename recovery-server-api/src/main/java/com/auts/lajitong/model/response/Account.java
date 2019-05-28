@@ -3,6 +3,7 @@ package com.auts.lajitong.model.response;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.auts.lajitong.consts.SexTypeEnum;
 import com.auts.lajitong.consts.StatusTypeEnum;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
 
@@ -14,18 +15,24 @@ public class Account {
 
     private int uid;
     @JSONField(name = "account_id")
+    @JsonProperty(value = "account_id")
     private String accountId;
     @JSONField(name = "nick_name")
+    @JsonProperty(value = "nick_name")
     private String nickName;
     private int sex;
     private int status;
     @JSONField(name = "current_profit")
+    @JsonProperty(value = "current_profit")
     private int currentProfit;
     @JSONField(name = "deliver_count")
+    @JsonProperty(value = "deliver_count")
     private int deliverCount;
     @JSONField(name = "total_profit")
+    @JsonProperty(value = "total_profit")
     private int totalProfit;
     @JSONField(name = "create_time")
+    @JsonProperty(value = "create_time")
     private String createTime;
 
     private String s_sex;
