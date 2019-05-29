@@ -1,7 +1,7 @@
 require('./check-versions')()
 
-process.env.NODE_ENV = 'development'
-// production
+process.env.NODE_ENV = 'production'
+// development
 
 var ora = require('ora')
 var rm = require('rimraf')

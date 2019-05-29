@@ -73,7 +73,7 @@
                 if (this.checkLogin()) return;
                 let scan_url = decodeURIComponent(options.q);
                 console.log(scan_url);
-                let deviceId = scan_url.replace(API.baseUrlForProd,'');
+                let deviceId = scan_url.replace(API.baseUrlForProd + 'equipment/code/','');
                 let userId = wx.getStorageSync("userId");
                 let res = await this.$post(API.scanDevice, {
                     device_id: deviceId,
@@ -129,30 +129,27 @@
             code() {
                 if (this.checkLogin()) return;
                 wx.scanCode({
-                    success(res) {
+                    success: res => {
                         console.log(res);
-                        let deviceId = res.result.replace(API.baseUrlForProd + 'equipment/','');
+                        let deviceId = res.result.replace(API.baseUrlForProd + 'equipment/code/','');
                         let userId = wx.getStorageSync("userId");
-                        scanDevice(deviceId, userId);
+                        console.log("deviceId:" + deviceId);
+                        console.log("userId:" + userId);
+                        let result = this.$post(API.scanDevice, {
+                            device_id: deviceId,
+                            uid: userId
+                        }, false);
+                        if(result.err_code === 0) {
+                            this.$toast("扫码识别设备成功");
+                        }else{
+                            this.$toast("扫码识别设备失败");
+                        }
                     },
-                    fail(res) {
+                    fail: res => {
                         this.$toast("扫码识别设备失败");
                         console.log(res);
                     }
                 })
-            },
-            scanDevice(deviceId, userId) {
-                console.log("deviceId:" + deviceId);
-                console.log("userId:" + userId);
-                let result = this.$post(API.scanDevice, {
-                    device_id: deviceId,
-                    uid: userId
-                }, false);
-                if(result.err_code === 0) {
-                    this.$toast("扫码识别设备成功");
-                }else{
-                    this.$toast("扫码识别设备失败");
-                }
             },
             checkLogin() {
                 if (wx.getStorageSync("isLogin")) return false;
@@ -233,6 +230,10 @@
         .banner {
             display: flex;
             margin: 2px 4px;
+            width: 100%;
+            img{
+                width: 100%;
+            }
         }
         .nav-list {
             display: flex;

@@ -1,5 +1,5 @@
 export default {
-    baseUrlForDev: 'http://127.0.0.1:8280/', // 测试环境
+    baseUrlForDev: 'http://ht8.com.cn/', // 测试环境
 
     baseUrlForProd: 'http://ht8.com.cn/', // 生产环境
 

@@ -41,7 +41,7 @@ public class SocketClient extends WebSocketClient {
 
     public static void main(String[] args) {
         try {
-            SocketClient client = new SocketClient("ws://127.0.0.1:8280/recoverysocket/111111");
+            SocketClient client = new SocketClient("ws://ht8.com.cn:8280/recoverysocket/a1b1c1");
             client.connect();
             while (!client.getReadyState().equals(WebSocket.READYSTATE.OPEN)) {
                 System.out.println("还没有打开");

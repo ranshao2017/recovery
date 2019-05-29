@@ -9,8 +9,8 @@
 	},
 	"miniprogramRoot": "dist/",
 	"compileType": "miniprogram",
-	"appid": "wx0b1c6dfc7ae0bd3c",
-	"projectname": "%E6%99%BA%E8%83%BD%E5%9B%9E%E6%94%B6%E7%AE%B1",
+	"appid": "wx1299cd1b5be3deb7",
+	"projectname": "辉腾云智能回收机",
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
 	"condition": {
@@ -39,24 +39,6 @@
 					"pathName": "pages/index/main",
 					"query": "",
 					"scene": null
-				},
-				{
-					"id": 1,
-					"name": "current2",
-					"pathName": "pages/wallet/main",
-					"query": ""
-				},
-				{
-					"id": -1,
-					"name": "bind",
-					"pathName": "pages/bindCard/main",
-					"query": ""
-				},
-				{
-					"id": -1,
-					"name": "w",
-					"pathName": "pages/withdrawal/main",
-					"query": ""
 				},
 				{
 					"id": -1,

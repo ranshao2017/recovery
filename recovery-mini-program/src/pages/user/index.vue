@@ -86,16 +86,9 @@
             position: relative;
             height: 200px;
             background: #fff;
-            width: 100vw;
-            overflow: hidden;
-            .bg {
-                width: 120vw;
-                height: 300px;
-                border-radius: 50%;
-                background: @mainColor;
-                position: absolute;
-                top: -220px;
-                left: -10vw;
+            width: 100%;
+            img{
+                width: 100%;
             }
             .avatar {
                 position: absolute;

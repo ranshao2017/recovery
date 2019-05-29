@@ -7,7 +7,7 @@ let self = new Vue();
 const Fly = require("flyio/dist/npm/wx");
 const fly = new Fly;
 
-const isDev = process.env.NODE_ENV === "production";
+const isDev = process.env.NODE_ENV === "development";
 
 fly.config.baseURL = isDev ? apiList.baseUrlForDev : apiList.baseUrlForProd;
 
