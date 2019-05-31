@@ -1,7 +1,7 @@
 export default {
-    baseUrlForDev: 'http://ht8.com.cn/', // 测试环境
+    baseUrlForDev: 'https://ht8.com.cn/', // 测试环境
 
-    baseUrlForProd: 'http://ht8.com.cn/', // 生产环境
+    baseUrlForProd: 'https://ht8.com.cn/', // 生产环境
 
     // 获取验证码
     getCode: 'equipment/sendSms',

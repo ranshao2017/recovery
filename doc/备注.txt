@@ -1,5 +1,6 @@
 云片账号：18666215001/ht888888
 百度账号：briskman8/ht888888
 阿里云服务器：ht8.com.cn htnetuser/Huiteng951
+阿里云账号：18927429335@189.cn/Huiteng
 数据库：193.112.242.239:3309 recycledb  root/yang_2511187
 微信开发者平台账号：https://mp.weixin.qq.com/ wechat@ht8.com.cn ht888888

@@ -69,17 +69,18 @@
         },
         async onLoad(options) {
             if (options.q !== undefined) {
-                console.log("获取到options");
-                if (this.checkLogin()) return;
                 let scan_url = decodeURIComponent(options.q);
-                console.log(scan_url);
                 let deviceId = scan_url.replace(API.baseUrlForProd + 'equipment/code/','');
+                wx.setStorageSync("scanDeviceId", deviceId);
+
+                if (this.checkLogin()) return;
                 let userId = wx.getStorageSync("userId");
                 let res = await this.$post(API.scanDevice, {
                     device_id: deviceId,
                     uid: userId
                 }, false);
                 if(res.err_code === 0) {
+                    wx.removeStorageSync("scanDeviceId");
                     this.$toast("扫码识别设备成功");
                 }else{
                     this.$toast("扫码识别设备失败");
@@ -93,10 +94,24 @@
                 this.greenGold = "0.00";
                 this.count = 0;
                 this.loginFlag = false;
-                return;
+            }else{
+                let deviceId = wx.getStorageSync("scanDeviceId");
+                console.log("获取扫码设备" + deviceId);
+                if(!deviceId) return;
+                let userId = wx.getStorageSync("userId");
+                let res = this.$post(API.scanDevice, {
+                    device_id: deviceId,
+                    uid: userId
+                }, false);
+                if(res.err_code === 0) {
+                    wx.removeStorageSync("scanDeviceId");
+                    this.$toast("扫码识别设备成功");
+                }else{
+                    this.$toast("扫码识别设备失败");
+                }
+                this.loginFlag = true;
+                this.getUserInfo();
             }
-            this.loginFlag = true;
-            this.getUserInfo();
         },
         methods: {
             settingClick() {

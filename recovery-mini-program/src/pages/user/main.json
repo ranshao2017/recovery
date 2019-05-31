@@ -5,7 +5,5 @@
         "i-modal": "../../../static/iview/modal/index",
         "i-input": "../../../static/iview/input/index"
     },
-    "navigationBarTitleText": "个人中心",
-    "navigationBarBackgroundColor": "#a3e846",
-    "navigationBarTextStyle": "white"
+    "navigationBarTitleText": "个人中心"
 }
