@@ -23,6 +23,7 @@
 	"projectname": "辉腾云智能回收机",
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
+	"libVersion": "2.0.0",
 	"condition": {
 		"search": {
 			"current": -1,
