@@ -51,6 +51,12 @@ public class WebsocketServer {
     @OnMessage
     public void OnMessage(@PathParam(value = "deviceId") String deviceId, String message) {
         LOGGER.info("接收到websocket消息" + deviceId + "，" + message);
+        Session session = sessionMap.get(deviceId);
+        try {
+            session.getBasicRemote().sendText("SUCCESS");
+        } catch (IOException e) {
+            LOGGER.error("接收websocket链接消息返回客户端SUCCESS异常", e);
+        }
     }
 
     @OnError
