@@ -15,7 +15,6 @@ public class AccountModel {
     private int deliverCount;
     private int totalProfit;
     private String wxsOpenId;
-    private String faceToken;
     private String icCard;
     private String createTime;
 
@@ -91,14 +90,6 @@ public class AccountModel {
         this.wxsOpenId = wxsOpenId;
     }
 
-    public String getFaceToken() {
-        return faceToken;
-    }
-
-    public void setFaceToken(String faceToken) {
-        this.faceToken = faceToken;
-    }
-
     public String getIcCard() {
         return icCard;
     }
@@ -127,7 +118,6 @@ public class AccountModel {
                 ", deliverCount=" + deliverCount +
                 ", totalProfit=" + totalProfit +
                 ", wxsOpenId='" + wxsOpenId + '\'' +
-                ", faceToken='" + faceToken + '\'' +
                 ", icCard='" + icCard + '\'' +
                 ", createTime='" + createTime + '\'' +
                 '}';

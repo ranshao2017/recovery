@@ -152,7 +152,6 @@ public class AccountServiceImpl implements AccountService {
             ac.setDeliverCount(0);
             ac.setTotalProfit(0);
             ac.setWxsOpenId("");
-            ac.setFaceToken("");
             ac.setIcCard("");
             ac.setCreateTime(DateUtils.getNowTime());
             accountMapper.register(ac);
@@ -201,6 +200,7 @@ public class AccountServiceImpl implements AccountService {
             responseData.setErr_code(1);
             responseData.setErr_msg("人像检索失败");
         }else{
+            LOGGER.info("人脸检索成功");
             JSONObject result = res.getJSONObject("result");
             JSONArray jsonArray = result.getJSONArray("user_list");
             //默认获取第一条用户信息
@@ -210,13 +210,17 @@ public class AccountServiceImpl implements AccountService {
             if (score < 80) {
                 responseData.setErr_code(1);
                 responseData.setErr_msg("人像检索失败");
+                LOGGER.warn("score < 80 返回检索失败");
             }else{
-                String faceToken = result.getString("face_token");
-                AccountModel aM = accountMapper.queryAccountByFaceToken(faceToken);
+                String userId = userInfo.getString("user_id");
+                LOGGER.info("获取到user_id：" + userId);
+                AccountModel aM = accountMapper.queryAccountByPhone(userId);
                 if(null == aM){
                     responseData.setErr_code(1);
                     responseData.setErr_msg("未找到人脸对应的用户信息");
+                    LOGGER.warn("未找到人脸对应的用户信息");
                 }else{
+                    LOGGER.info("人脸识别登录成功");
                     responseData.setErr_code(0);
                     responseData.setErr_msg("人脸识别登录成功");
                     Account account = new Account();
@@ -263,10 +267,6 @@ public class AccountServiceImpl implements AccountService {
                 responseData.setErr_msg("人像注册失败");
             }else{
                 LOGGER.info("人像注册成功");
-                res = res.getJSONObject("result");
-                //人像信息的唯一标识
-                String face_token = res.getString("face_token");
-
                 //判断是否存在该用户
                 AccountModel user = accountMapper.queryAccountByPhone(mobile);
                 if(null == user){
@@ -280,7 +280,6 @@ public class AccountServiceImpl implements AccountService {
                     ac.setDeliverCount(0);
                     ac.setTotalProfit(0);
                     ac.setWxsOpenId("");
-                    ac.setFaceToken(face_token);
                     ac.setIcCard("");
                     ac.setCreateTime(DateUtils.getNowTime());
                     accountMapper.register(ac);
@@ -292,15 +291,12 @@ public class AccountServiceImpl implements AccountService {
                     responseData.setData(account);
                     LOGGER.info("人脸注册成功");
                 }else{
-                    LOGGER.info("存在用户，完善facetoken");
-                    user.setFaceToken(face_token);
-                    accountMapper.updateAccountModel(user);
+                    LOGGER.info("存在用户，返回");
                     Account account = new Account();
                     BeanUtils.copyProperties(user, account);
                     responseData.setErr_code(0);
                     responseData.setErr_msg("人脸注册成功");
                     responseData.setData(account);
-                    LOGGER.info("人脸信息更新成功");
                 }
             }
         } catch (Exception e) {
@@ -374,7 +370,6 @@ public class AccountServiceImpl implements AccountService {
             ac.setDeliverCount(0);
             ac.setTotalProfit(0);
             ac.setWxsOpenId("");
-            ac.setFaceToken("");
             ac.setIcCard(card);
             ac.setCreateTime(DateUtils.getNowTime());
             accountMapper.register(ac);

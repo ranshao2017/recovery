@@ -21,7 +21,6 @@ public interface AccountMapper {
             @Result(property = "deliverCount", column = "deliver_count"),
             @Result(property = "totalProfit", column = "total_profit"),
             @Result(property = "wxsOpenId", column = "wxs_open_id"),
-            @Result(property = "faceToken", column = "face_token"),
             @Result(property = "icCard", column = "ic_card"),
             @Result(property = "createTime", column = "create_time")
     })
@@ -30,7 +29,7 @@ public interface AccountMapper {
     @Insert("insert into tbl_user (account_id, nick_name, sex, status, current_profit, deliver_count, " +
             "total_profit, wxs_open_id, face_token, ic_card, create_time) "
             + "values (#{ac.accountId},#{ac.nickName},#{ac.sex},#{ac.status},#{ac.currentProfit}," +
-            "#{ac.deliverCount},#{ac.totalProfit},#{ac.wxsOpenId},#{ac.faceToken},#{ac.icCard},#{ac.createTime})")
+            "#{ac.deliverCount},#{ac.totalProfit},#{ac.wxsOpenId},#{ac.icCard},#{ac.createTime})")
     @Options(useGeneratedKeys = true, keyProperty = "ac.uid")
     int register(@Param("ac") AccountModel ac);
 
@@ -45,7 +44,6 @@ public interface AccountMapper {
             @Result(property = "deliverCount", column = "deliver_count"),
             @Result(property = "totalProfit", column = "total_profit"),
             @Result(property = "wxsOpenId", column = "wxs_open_id"),
-            @Result(property = "faceToken", column = "face_token"),
             @Result(property = "icCard", column = "ic_card"),
             @Result(property = "createTime", column = "create_time")
     })
@@ -53,7 +51,7 @@ public interface AccountMapper {
 
     @Update("update tbl_user set account_id = #{model.accountId}, nick_name=#{model.nickName},sex=#{model.sex}," +
             "current_profit=#{model.currentProfit},deliver_count=#{model.deliverCount},total_profit=#{model.totalProfit}," +
-            "wxs_open_id=#{model.wxsOpenId},face_token=#{model.faceToken},ic_card=#{model.icCard},create_time=#{model.createTime} where uid=#{model.uid}")
+            "wxs_open_id=#{model.wxsOpenId},ic_card=#{model.icCard},create_time=#{model.createTime} where uid=#{model.uid}")
     int updateAccountModel(@Param("model") AccountModel model);
 
     @Select("select * from tbl_user where ic_card=#{card} limit 1")
@@ -67,7 +65,6 @@ public interface AccountMapper {
             @Result(property = "deliverCount", column = "deliver_count"),
             @Result(property = "totalProfit", column = "total_profit"),
             @Result(property = "wxsOpenId", column = "wxs_open_id"),
-            @Result(property = "faceToken", column = "face_token"),
             @Result(property = "icCard", column = "ic_card"),
             @Result(property = "createTime", column = "create_time")
     })
@@ -84,7 +81,6 @@ public interface AccountMapper {
             @Result(property = "deliverCount", column = "deliver_count"),
             @Result(property = "totalProfit", column = "total_profit"),
             @Result(property = "wxsOpenId", column = "wxs_open_id"),
-            @Result(property = "faceToken", column = "face_token"),
             @Result(property = "icCard", column = "ic_card"),
             @Result(property = "createTime", column = "create_time")
     })

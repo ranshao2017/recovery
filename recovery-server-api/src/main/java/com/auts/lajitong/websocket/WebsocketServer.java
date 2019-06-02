@@ -86,4 +86,20 @@ public class WebsocketServer {
         return true;
     }
 
+    /**
+     * 广播消息
+     */
+    public static boolean sendMsg(String message) {
+        LOGGER.info("推送内容:" + message);
+        if(sessionMap.size() > 0){
+            for(Map.Entry<String, Session> map : sessionMap.entrySet()){
+                map.getValue().getAsyncRemote().sendText(message);
+            }
+            return true;
+        }else{
+            LOGGER.error("无websocket链接，广播消息失败:" + message);
+            return false;
+        }
+    }
+
 }
