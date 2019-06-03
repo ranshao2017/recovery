@@ -160,11 +160,6 @@
                             device_id: deviceId,
                             uid: userId
                         }, false);
-                        if(result.err_code === 0) {
-                            this.$toast("扫码识别设备成功");
-                        }else{
-                            this.$toast("扫码识别设备失败");
-                        }
                     },
                     fail: res => {
                         this.$toast("扫码识别设备失败");

@@ -1,7 +1,9 @@
 package com.auts.lajitong.websocket;
 
+import com.alibaba.fastjson.JSON;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
@@ -53,7 +55,10 @@ public class WebsocketServer {
         LOGGER.info("接收到websocket消息" + deviceId + "，" + message);
         Session session = sessionMap.get(deviceId);
         try {
-            session.getBasicRemote().sendText("SUCCESS");
+            JSONObject obj = new JSONObject();
+            obj.put("data_type", "heart");
+            obj.put("data", "SUCCESS");
+            session.getBasicRemote().sendText(JSON.toJSONString(obj));
         } catch (IOException e) {
             LOGGER.error("接收websocket链接消息返回客户端SUCCESS异常", e);
         }

@@ -1,10 +1,12 @@
 package com.auts.lajitong.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.auts.lajitong.model.common.ResponseData;
 import com.auts.lajitong.util.RequestUtil;
 import com.auts.lajitong.websocket.WebsocketServer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.JSONObject;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -37,7 +39,11 @@ public class ExtraController {
             responseData.setErr_msg("获取请求参数异常");
             return responseData;
         }
-        boolean result = WebsocketServer.sendMsg(data);
+        JSONObject obj = new JSONObject();
+        obj.put("data_type", "system");
+        JSONObject jsonObject = new JSONObject(data);
+        obj.put("data", jsonObject);
+        boolean result = WebsocketServer.sendMsg(JSON.toJSONString(obj));
         if(result){
             responseData.setErr_code(0);
             responseData.setErr_msg("广播终端设备升级消息成功");
