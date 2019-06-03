@@ -15,6 +15,9 @@ export default {
     // 扫码识别设备
     scanDevice: 'equipment/scanDevice',
 
+    //修改昵称
+    editUserInfo: 'equipment/editNickName',
+
     // 投递记录
     deliveryList: 'equipment/v1/delivery/lists',
 

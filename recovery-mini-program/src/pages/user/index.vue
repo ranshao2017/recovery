@@ -54,11 +54,11 @@
             async confirmEdit() {
                 const userId = wx.getStorageSync('userId');
                 const res = await this.$post(API.editUserInfo, {
-                    userId,
-                    nickName: this.editName
+                    uid: userId,
+                    nick_name: this.editName
                 })
                 this.cancelEdit()
-                if (res.status !== 200) return;
+                if (res.err_code !== 0) return;
                 this.name = this.editName
             },
             cancelEdit() {

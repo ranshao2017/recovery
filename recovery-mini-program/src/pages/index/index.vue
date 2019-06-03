@@ -83,9 +83,6 @@
                 }, false);
                 if(res.err_code === 0) {
                     wx.removeStorageSync("scanDeviceId");
-                    this.$toast("扫码识别设备成功");
-                }else{
-                    this.$toast("扫码识别设备失败");
                 }
             }else{
                 console.log("未获取到options");
@@ -113,9 +110,6 @@
                 }, false);
                 if(res.err_code === 0) {
                     wx.removeStorageSync("scanDeviceId");
-                    this.$toast("扫码识别设备成功");
-                }else{
-                    this.$toast("扫码识别设备失败");
                 }
             }
         },
