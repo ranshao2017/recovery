@@ -14,6 +14,7 @@ import com.auts.lajitong.service.AccountService;
 import com.auts.lajitong.util.DateUtils;
 import com.auts.lajitong.websocket.WebsocketServer;
 import com.baidu.aip.face.AipFace;
+import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
@@ -63,6 +64,11 @@ public class AccountServiceImpl implements AccountService {
         ResponseData responseData = new ResponseData();
         LOGGER.info("发送短信验证码" + data);
         JSONObject jsonObject = new JSONObject(data);
+        if(StringUtils.isBlank(jsonObject.getString("mobile"))){
+            responseData.setErr_code(1);
+            responseData.setErr_msg("手机号码不能为空");
+            return responseData;
+        }
         try {
             //发送验证码短信
             String captchaCode = YPSmsApi.getRandCaptchaCode();
@@ -104,6 +110,11 @@ public class AccountServiceImpl implements AccountService {
         LOGGER.info("手机号码登录" + data);
         JSONObject jsonObject = new JSONObject(data);
         String mobile = jsonObject.getString("mobile");
+        if(StringUtils.isBlank(mobile)){
+            responseData.setErr_code(1);
+            responseData.setErr_msg("手机号码不能为空");
+            return responseData;
+        }
         AccountModel accountModel = accountMapper.queryAccountByPhone(mobile);
         if(null == accountModel) {
             LOGGER.error("根据登录手机号未找到用户" + mobile);
@@ -132,6 +143,16 @@ public class AccountServiceImpl implements AccountService {
         JSONObject jsonObject = new JSONObject(data);
         String mobile = jsonObject.getString("mobile");
         String code = jsonObject.getString("code");
+        if(StringUtils.isBlank(mobile)){
+            responseData.setErr_code(1);
+            responseData.setErr_msg("手机号码不能为空");
+            return responseData;
+        }
+        if(StringUtils.isBlank(code)){
+            responseData.setErr_code(1);
+            responseData.setErr_msg("验证码不能为空");
+            return responseData;
+        }
         //验证码模块
         boolean sms = this.verificationSms(mobile, code);
         if(!sms){
@@ -186,6 +207,11 @@ public class AccountServiceImpl implements AccountService {
         JSONObject jsonObject = new JSONObject(data);
         //读取人像后BASE64编码
         String image = jsonObject.getString("image");
+        if(StringUtils.isBlank(image)){
+            responseData.setErr_code(1);
+            responseData.setErr_msg("人像数据不能为空");
+            return responseData;
+        }
         LOGGER.info("人脸登录请求数据：" + data);
 
         HashMap<String, String> options = new HashMap<>();
@@ -244,6 +270,21 @@ public class AccountServiceImpl implements AccountService {
         String image = jsonObject.getString("image");
         String mobile = jsonObject.getString("mobile");
         String code = jsonObject.getString("code");
+        if(StringUtils.isBlank(image)){
+            responseData.setErr_code(1);
+            responseData.setErr_msg("人像数据不能为空");
+            return responseData;
+        }
+        if(StringUtils.isBlank(mobile)){
+            responseData.setErr_code(1);
+            responseData.setErr_msg("手机号码不能为空");
+            return responseData;
+        }
+        if(StringUtils.isBlank(code)){
+            responseData.setErr_code(1);
+            responseData.setErr_msg("验证码不能为空");
+            return responseData;
+        }
         //验证码模块
         boolean sms = this.verificationSms(mobile, code);
         if(!sms){
@@ -319,6 +360,11 @@ public class AccountServiceImpl implements AccountService {
         ResponseData responseData = new ResponseData();
         JSONObject jsonObject = new JSONObject(data);
         String card = jsonObject.getString("card");
+        if(StringUtils.isBlank(card)){
+            responseData.setErr_code(1);
+            responseData.setErr_msg("IC卡数据不能为空");
+            return responseData;
+        }
         LOGGER.info("IC卡登录" + data);
         AccountModel accountModel = accountMapper.queryAccountByIcCard(card);
         if(null == accountModel) {
@@ -350,6 +396,21 @@ public class AccountServiceImpl implements AccountService {
         String card = jsonObject.getString("card");
         String mobile = jsonObject.getString("mobile");
         String code = jsonObject.getString("code");
+        if(StringUtils.isBlank(card)){
+            responseData.setErr_code(1);
+            responseData.setErr_msg("IC卡数据不能为空");
+            return responseData;
+        }
+        if(StringUtils.isBlank(mobile)){
+            responseData.setErr_code(1);
+            responseData.setErr_msg("手机号码不能为空");
+            return responseData;
+        }
+        if(StringUtils.isBlank(code)){
+            responseData.setErr_code(1);
+            responseData.setErr_msg("验证码不能为空");
+            return responseData;
+        }
         //验证码模块
         boolean sms = this.verificationSms(mobile, code);
         if(!sms){

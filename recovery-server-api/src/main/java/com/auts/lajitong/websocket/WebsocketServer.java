@@ -10,6 +10,7 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -32,11 +33,11 @@ public class WebsocketServer {
     public void onOpen(@PathParam(value = "deviceId") String deviceId, Session session) {
         LOGGER.info("有新的websocket链接建立" + deviceId);
         sessionMap.put(deviceId, session);
-        try {
-            session.getBasicRemote().sendText("SUCCESS");
-        } catch (IOException e) {
-            LOGGER.error("建立websocket链接返回客户端SUCCESS异常", e);
-        }
+
+        Map<String, String> obj = new HashMap<>();
+        obj.put("data_type", "heart");
+        obj.put("data", "SUCCESS");
+        session.getAsyncRemote().sendText(JSON.toJSONString(obj));
     }
 
     @OnClose
@@ -51,17 +52,14 @@ public class WebsocketServer {
      * @param message
      */
     @OnMessage
-    public void OnMessage(@PathParam(value = "deviceId") String deviceId, String message) {
+    public void onMessage(@PathParam(value = "deviceId") String deviceId, String message) {
         LOGGER.info("接收到websocket消息" + deviceId + "，" + message);
         Session session = sessionMap.get(deviceId);
-        try {
-            JSONObject obj = new JSONObject();
-            obj.put("data_type", "heart");
-            obj.put("data", "SUCCESS");
-            session.getBasicRemote().sendText(JSON.toJSONString(obj));
-        } catch (IOException e) {
-            LOGGER.error("接收websocket链接消息返回客户端SUCCESS异常", e);
-        }
+
+        Map<String, String> obj = new HashMap<>();
+        obj.put("data_type", "heart");
+        obj.put("data", "SUCCESS");
+        session.getAsyncRemote().sendText(JSON.toJSONString(obj));
     }
 
     @OnError
@@ -98,7 +96,8 @@ public class WebsocketServer {
         LOGGER.info("推送内容:" + message);
         if(sessionMap.size() > 0){
             for(Map.Entry<String, Session> map : sessionMap.entrySet()){
-                map.getValue().getAsyncRemote().sendText(message);
+                RemoteEndpoint.Async async = map.getValue().getAsyncRemote();
+                async.sendText(message);
             }
             return true;
         }else{

@@ -15,6 +15,7 @@ import com.auts.lajitong.model.response.DeliveryOrder;
 import com.auts.lajitong.model.response.ObjType;
 import com.auts.lajitong.util.DateUtils;
 import com.baidu.aip.imageclassify.AipImageClassify;
+import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
@@ -69,6 +70,11 @@ public class DeliveryServiceImpl implements DeliveryService {
         String image = jsonObject.getString("image");
         String device_id = jsonObject.getString("device_id");
         int uid = jsonObject.getInt("uid");
+        if(StringUtils.isBlank(image)){
+            responseData.setErr_code(1);
+            responseData.setErr_msg("物品数据不能为空");
+            return responseData;
+        }
 
         String savePath = saveImageFile(image);
         if(null == savePath){
