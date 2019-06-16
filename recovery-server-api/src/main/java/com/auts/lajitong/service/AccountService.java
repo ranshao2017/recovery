@@ -71,4 +71,5 @@ public interface AccountService {
      * @return
      */
     ResponseData scanDevice(String data);
+
 }
