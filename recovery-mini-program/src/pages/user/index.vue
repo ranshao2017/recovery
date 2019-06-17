@@ -12,8 +12,8 @@
                 <i-cell @click="showEditName" title="用户昵称" :value="name" is-link></i-cell>
                 <i-cell title="登录手机号" :value="mobile"></i-cell>
                 <i-cell title="帮助中心" is-link url="/pages/helpCenter/main"></i-cell>
-                <i-cell title="意见反馈" is-link url="/pages/idea/main"></i-cell>
-                <i-cell title="反馈记录" is-link url="/pages/ideaList/main"></i-cell>
+                <!--<i-cell title="意见反馈" is-link url="/pages/idea/main"></i-cell>
+                <i-cell title="反馈记录" is-link url="/pages/ideaList/main"></i-cell>-->
                 <i-cell title="设置" is-link url="/pages/setting/main"></i-cell>
             </i-cell-group>
         </div>
