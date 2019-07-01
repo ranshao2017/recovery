@@ -174,7 +174,9 @@
                         this.$toast("该功能即将开放，敬请期待");
                         break;
                     case 1:
-                        this.$toast("该功能即将开放，敬请期待");
+                        this.$router.push({
+                            path: "/pages/near/main"
+                        });
                         break;
                     case 2:
                         this.$toast("该功能即将开放，敬请期待");

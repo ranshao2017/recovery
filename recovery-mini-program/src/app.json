@@ -5,6 +5,7 @@
         "pages/login/main",
         "pages/verifyCode/main",
         "pages/helpCenter/main",
+        "pages/near/main",
         "pages/user/main",
         "pages/walletDetail/main",
         "pages/delivery/main",
@@ -19,5 +20,10 @@
         "navigationBarBackgroundColor": "#fff",
         "navigationBarTitleText": "WeChat",
         "navigationBarTextStyle": "black"
+    },
+    "permission": {
+        "scope.userLocation": {
+            "desc": "获取您的位置信息，便于查找附近的回收机"
+        }
     }
 }
