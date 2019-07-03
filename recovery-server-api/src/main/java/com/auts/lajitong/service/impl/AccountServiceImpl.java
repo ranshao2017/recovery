@@ -218,7 +218,7 @@ public class AccountServiceImpl implements AccountService {
         //返回对比度最高的那张脸
         options.put("max_user_num", "1");
         // 人脸搜索
-        JSONObject res = getClient().search(image, imageType, "01", options);
+        JSONObject res = getClient().search(image, imageType, "03", options);
         LOGGER.info("调用百度AI人像检索，获取到信息：" + res.toString());
         String error_code = res.getString("error_msg");
         if(!"SUCCESS".equals(error_code)){
@@ -296,10 +296,10 @@ public class AccountServiceImpl implements AccountService {
             HashMap<String, String> options = new HashMap<>();
             options.put("mobile", mobile);
             //先删除已有的人像信息
-            getClient().deleteUser("01", mobile, options);
+            getClient().deleteUser("03", mobile, options);
             LOGGER.info("调用百度AI删除已有的人像信息成功");
             //再新增新的人像信息
-            JSONObject res = getClient().addUser(image, imageType, "01", mobile, options);
+            JSONObject res = getClient().addUser(image, imageType, "03", mobile, options);
             LOGGER.info("调用百度AI接口新增新的人像信息，返回数据：" + res.toString());
             String status = res.getString("error_msg");
             if (!"SUCCESS".equals(status)) {
