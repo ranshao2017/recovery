@@ -31,5 +31,8 @@ export default {
     addIdea: 'equipment/users/v1/saveFeedback',
 
     // 意见反馈列表
-    ideaList: 'equipment/users/v1/queryFeedbackByUserId'
+    ideaList: 'equipment/users/v1/queryFeedbackByUserId',
+
+    //获取设备列表
+    getEquipList: 'equipment/list'
 };

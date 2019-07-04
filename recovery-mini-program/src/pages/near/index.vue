@@ -34,6 +34,7 @@
 
 <script>
     import { isForbidden } from "utils/stopRequest";
+    import API from "api/apiList";
 
     let touchTimeStamp = 0;
     export default {
@@ -44,49 +45,65 @@
                     longitude: 113.8878770000 //要去的经度-地址
                 },
                 mapCtx: null,
-                markers: [
-                    {
-                        id: 0,
-                        latitude: 36.6744,
-                        longitude: 117.141091,
-                        iconPath: require("../../assets/imgs/icon_map.png"),
-                        width: 32,
-                        height: 32
-                    },
-                    {
-                        id: 1,
-                        latitude: 36.676236,
-                        longitude: 117.142268,
-                        iconPath: require("../../assets/imgs/icon_map.png"),
-                        width: 32,
-                        height: 32
-                    },
-                    {
-                        id: 2,
-                        latitude: 36.67545,
-                        longitude: 117.144487,
-                        iconPath: require("../../assets/imgs/icon_map.png"),
-                        width: 32,
-                        height: 32
-                    }
-                ],
+                markers: [],
+                //     {
+                //         id: 0,
+                //         latitude: 36.6744,
+                //         longitude: 117.141091,
+                //         iconPath: require("../../assets/imgs/icon_map.png"),
+                //         width: 32,
+                //         height: 32
+                //     },
+                //     {
+                //         id: 1,
+                //         latitude: 36.676236,
+                //         longitude: 117.142268,
+                //         iconPath: require("../../assets/imgs/icon_map.png"),
+                //         width: 32,
+                //         height: 32
+                //     },
+                //     {
+                //         id: 2,
+                //         latitude: 36.67545,
+                //         longitude: 117.144487,
+                //         iconPath: require("../../assets/imgs/icon_map.png"),
+                //         width: 32,
+                //         height: 32
+                //     }
+                // ],
                 circles: [],
                 currentAddress: "",
                 currentAddressIcon: require("../../assets/imgs/icon_map.png"),
                 qqmapSdk: null
             };
         },
-        onLoad() {
+        async onLoad() {
             // this.qqmapSdk = new QQMapWX({
             //     key: "RLRBZ-PUYOP-DXDDT-VV5P2-5VJHF-RHFCL"
             // });
             this.init();
             // this.mapCenter = this.$root.$mp.query;
+            this.loadEquip();
         },
         mounted() {
 
         },
         methods: {
+            async loadEquip() {
+                console.log("获取设备列表");
+                const res = await this.$get(API.getEquipList);
+                console.log(res);
+                if (res.err_code !== 0) return;
+                for (var i = 0; i < res.data.length; i ++){
+                    this.markers[i] = {
+                        id: res.data[i].eid,
+                        latitude: res.data[i].latitude,
+                        longitude: res.data[i].longitude,
+                        iconPath: require("../../assets/imgs/" + res.data[i].status +".png")
+                    };
+                }
+                // this.markers = res.data;
+            },
             map() {
                 wx.openLocation({
                     latitude: this.mapCenter.latitude,//要去的纬度-地址
