@@ -2,7 +2,7 @@
     <div class="page-near">
         <!--附近回收机列表 <br>-->
         <!--点击列表去导航 <br>-->
-        <div @click="map">点击</div>
+        <!--<div @click="map">点击</div>-->
         <!--<map @regionchange="regionChange" ></map>-->
 
         <map
@@ -15,20 +15,21 @@
         @end="regionChangeEnd"
         show-location
         id="near">
-        <!--<cover-view>-->
-        <!--<cover-view class="btn-list">列表模式</cover-view>-->
-        <!--<cover-image-->
-        <!--style="width: 26px; height: 30px;display: block;position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%)"-->
-        <!--class="icon" src="/static/imgs/icon_near.png"></cover-image>-->
-        <!--<cover-view-->
-        <!--style="position: fixed;left: 50%;top: 25%;transform: translate(-50%, -50%);text-align: center"-->
-        <!--class="address">-->
-        <!--<cover-image style="width: 26px;display: block;margin: 0 auto 10px" class="icon_near"-->
-        <!--src="/static/imgs/icon_near.png"/>-->
-        <!--<cover-view style="font-size: 16px;font-weight: bold">{{currentAddress}}</cover-view>-->
-        <!--</cover-view>-->
-        <!--</cover-view>-->
         </map>
+        <div class="map-detail">
+            <div class="time-msg">
+                <img src="/static/imgs/time.png">周一至周日 08:30 - 21:00
+            </div>
+            <div v-if="equiStatus != ''" class="status-msg">
+                {{equiStatus}}
+            </div>
+            <div class="daohang" @click="goTo">
+                <img src="/static/imgs/daohang.png">
+            </div>
+        </div>
+        <div class="rec-obj">
+            <img src="/static/imgs/recobj.png">
+        </div>
     </div>
 </template>
 
@@ -46,43 +47,14 @@
                 },
                 mapCtx: null,
                 markers: [],
-                //     {
-                //         id: 0,
-                //         latitude: 36.6744,
-                //         longitude: 117.141091,
-                //         iconPath: require("../../assets/imgs/icon_map.png"),
-                //         width: 32,
-                //         height: 32
-                //     },
-                //     {
-                //         id: 1,
-                //         latitude: 36.676236,
-                //         longitude: 117.142268,
-                //         iconPath: require("../../assets/imgs/icon_map.png"),
-                //         width: 32,
-                //         height: 32
-                //     },
-                //     {
-                //         id: 2,
-                //         latitude: 36.67545,
-                //         longitude: 117.144487,
-                //         iconPath: require("../../assets/imgs/icon_map.png"),
-                //         width: 32,
-                //         height: 32
-                //     }
-                // ],
                 circles: [],
                 currentAddress: "",
-                currentAddressIcon: require("../../assets/imgs/icon_map.png"),
-                qqmapSdk: null
+                currentAddressIcon: require("../../../static/imgs/icon_map.png"),
+                equiStatus:""
             };
         },
         async onLoad() {
-            // this.qqmapSdk = new QQMapWX({
-            //     key: "RLRBZ-PUYOP-DXDDT-VV5P2-5VJHF-RHFCL"
-            // });
             this.init();
-            // this.mapCenter = this.$root.$mp.query;
             this.loadEquip();
         },
         mounted() {
@@ -94,22 +66,24 @@
                 const res = await this.$get(API.getEquipList);
                 console.log(res);
                 if (res.err_code !== 0) return;
-                for (var i = 0; i < res.data.length; i ++){
-                    this.markers[i] = {
-                        id: res.data[i].eid,
-                        latitude: res.data[i].latitude,
-                        longitude: res.data[i].longitude,
-                        iconPath: require("../../assets/imgs/" + res.data[i].status +".png")
+
+                res.data.forEach(item => {
+                    var obj = {
+                        id: item.eid,
+                        latitude: item.latitude,
+                        longitude: item.longitude,
+                        iconPath: "/static/imgs/near_" + item.status +".png",
+                        s_status: item.s_status,
+                        width: 26,
+                        height: 32
                     };
-                }
-                // this.markers = res.data;
+                    this.markers.push(obj);
+                });
             },
-            map() {
+            goTo() {
                 wx.openLocation({
                     latitude: this.mapCenter.latitude,//要去的纬度-地址
                     longitude: this.mapCenter.longitude//要去的经度-地址
-                    // name: "宝安中心A地铁口",
-                    // address: "宝安中心A地铁口"
                 });
             },
             init() {
@@ -125,12 +99,11 @@
 
             },
             showDetail(e) {
-                console.log(e);
-                console.log(e.mp.markerId);
                 this.markers.forEach(item => {
                     if (item.id == e.mp.markerId) {
                         this.mapCenter.latitude = item.latitude;
                         this.mapCenter.longitude = item.longitude;
+                        this.equiStatus = item.s_status;
                     }
                 });
             },
@@ -160,6 +133,53 @@
 <style lang="less">
 
     @import "../../styles/mixin";
+
+    .page-near{
+        .map-detail{
+            margin-top: 15px;
+            color: @fontColor6;
+            font-size: 15px;
+            line-height: 30px;
+            width: 100%;
+
+            .time-msg{
+                float: left;
+                margin-left: 8px;
+                img {
+                    width: 25px;
+                    height: 25px;
+                    margin-right: 8px;
+                }
+            }
+            .status-msg{
+                margin-left: 20px;
+                float: left;
+                width: 80px;
+                height: 25px;
+                border-radius: 23px;
+                text-align: center;
+                line-height: 25px;
+                border: 2px solid #d4c10d;
+                color: #d4c10d;
+            }
+            .daohang{
+                float: right;
+                margin-right: 15px;
+                img{
+                    width: 28px;
+                    height: 28px;
+                }
+            }
+        }
+        .rec-obj{
+            border-top: 1px solid #cdcaca;
+            margin-top: 50px;
+            img{
+                width: 400px;
+                height: 100px;
+            }
+        }
+    }
 
     map {
         width: 100vw;
