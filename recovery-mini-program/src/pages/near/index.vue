@@ -16,15 +16,20 @@
         show-location
         id="near">
         </map>
+        <div class="map-detail0">
+            <div class="daohang-msg">
+                <img src="/static/imgs/icon_near.png">{{distance}} km
+            </div>
+            <div class="daohang" @click="goTo">
+                <img src="/static/imgs/daohang.png">
+            </div>
+        </div>
         <div class="map-detail">
             <div class="time-msg">
                 <img src="/static/imgs/time.png">周一至周日 08:30 - 21:00
             </div>
             <div v-if="equiStatus != ''" class="status-msg">
                 {{equiStatus}}
-            </div>
-            <div class="daohang" @click="goTo">
-                <img src="/static/imgs/daohang.png">
             </div>
         </div>
         <div class="rec-obj">
@@ -50,7 +55,10 @@
                 circles: [],
                 currentAddress: "",
                 currentAddressIcon: require("../../../static/imgs/icon_map.png"),
-                equiStatus:""
+                equiStatus:"",
+                beginLat: 22.5542080000,
+                beginLon: 113.8878770000,
+                distance: 0.00
             };
         },
         async onLoad() {
@@ -93,6 +101,10 @@
                         console.log("wx.getLocation执行" + res.latitude + "-" + res.longitude);
                         this.mapCenter.latitude = res.latitude;
                         this.mapCenter.longitude = res.longitude;
+
+                        this.beginLat = res.latitude;
+                        this.beginLon = res.longitude;
+
                         this.mapCtx.moveToLocation();
                     }
                 });
@@ -104,6 +116,9 @@
                         this.mapCenter.latitude = item.latitude;
                         this.mapCenter.longitude = item.longitude;
                         this.equiStatus = item.s_status;
+
+                        let dis = this.getDistance(this.beginLat, this.beginLon, this.mapCenter.latitude, this.mapCenter.longitude);
+                        this.distance = dis.toFixed(2);
                     }
                 });
             },
@@ -124,7 +139,22 @@
                 if (e.timeStamp - touchTimeStamp > 120) {
                     this.regionChange();
                 }
-
+            },
+            //进行经纬度转换为距离的计算
+            rad(d){
+                return d * Math.PI / 180.0;//经纬度转换成三角函数中度分表形式。
+            },
+            //计算距离，参数分别为第一点的纬度，经度；第二点的纬度，经度
+            getDistance(lat1, lng1, lat2, lng2){
+                let radLat1 = this.rad(lat1);
+                let radLat2 = this.rad(lat2);
+                let a = radLat1 - radLat2;
+                let  b = this.rad(lng1) - this.rad(lng2);
+                let s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a/2),2) +
+                    Math.cos(radLat1)*Math.cos(radLat2)*Math.pow(Math.sin(b/2),2)));
+                s = s *6378.137 ;// EARTH_RADIUS;
+                s = Math.round(s * 10000) / 10000; //输出为公里
+                return s;
             }
         }
     };
@@ -135,19 +165,44 @@
     @import "../../styles/mixin";
 
     .page-near{
-        .map-detail{
+        .map-detail0{
             margin-top: 15px;
             color: @fontColor6;
             font-size: 15px;
-            line-height: 30px;
+            height: 35px;
+            width: 100%;
+
+            .daohang-msg{
+                float: left;
+                margin-left: 15px;
+                img {
+                    width: 22px;
+                    height: 22px;
+                    margin-right: 15px;
+                }
+            }
+
+            .daohang{
+                float: right;
+                margin-right: 15px;
+                img{
+                    width: 28px;
+                    height: 28px;
+                }
+            }
+        }
+        .map-detail{
+            color: @fontColor6;
+            font-size: 15px;
+            height: 35px;
             width: 100%;
 
             .time-msg{
                 float: left;
-                margin-left: 8px;
+                margin-left: 15px;
                 img {
-                    width: 25px;
-                    height: 25px;
+                    width: 22px;
+                    height: 22px;
                     margin-right: 8px;
                 }
             }
@@ -162,18 +217,11 @@
                 border: 2px solid #d4c10d;
                 color: #d4c10d;
             }
-            .daohang{
-                float: right;
-                margin-right: 15px;
-                img{
-                    width: 28px;
-                    height: 28px;
-                }
-            }
+
         }
         .rec-obj{
             border-top: 1px solid #cdcaca;
-            margin-top: 50px;
+            margin-top: 15px;
             img{
                 width: 400px;
                 height: 100px;
